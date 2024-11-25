@@ -1,4 +1,4 @@
----
+<!-- ---
 layout: page
 title: submenus
 nav: true
@@ -12,5 +12,5 @@ children:
     permalink: /projects/
   - title: divider
   - title: blog
-    permalink: /blog/
----
+    permalink: /archive/
+--- -->

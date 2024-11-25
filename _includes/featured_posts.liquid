@@ -1,20 +1,20 @@
 <div class="news">
-  {% if site.latest_posts != blank %}
-    {% assign latest_posts = site.posts | where_exp: "item", "item.redirect == blank" %}
-    {% assign latest_posts_size = latest_posts | size %}
+  {% if site.featured_posts != blank %}
+    {% assign featured_posts_size = site.posts | where: "featured", true | size %}
     <div
       class="table-responsive"
-      {% if site.latest_posts.scrollable and latest_posts_size > 3 %}
+      {% if site.featured_posts.scrollable and featured_posts_size > 3 %}
         style="max-height: 60vw"
       {% endif %}
     >
       <table class="table table-sm table-borderless">
-        {% if site.latest_posts.limit %}
-          {% assign latest_posts_limit = site.latest_posts.limit %}
+        {% assign featured_posts = site.posts %}
+        {% if site.featured_posts.limit %}
+          {% assign featured_posts_limit = site.featured_posts.limit %}
         {% else %}
-          {% assign latest_posts_limit = latest_posts_size %}
+          {% assign featured_posts_limit = featured_posts_size %}
         {% endif %}
-        {% for item in latest_posts limit: latest_posts_limit %}
+        {% for item in featured_posts limit: featured_posts_limit %}
           <tr>
             <th scope="row" style="width: 20%">{{ item.date | date: '%b %d, %Y' }}</th>
             <td>
@@ -40,12 +40,6 @@
             </td>
           </tr>
         {% endfor %}
-        {% if latest_posts_size > latest_posts_limit %}
-          <tr>
-            <th scope="row"></th>
-            <td colspan="2"><a href="{{ '/archive/' | relative_url }}">View more...</a></td>
-          </tr>
-        {% endif %}
       </table>
     </div>
   {% else %}

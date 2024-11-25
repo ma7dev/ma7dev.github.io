@@ -18,14 +18,35 @@
           <tr>
             <th scope="row" style="width: 20%">{{ item.date | date: '%b %d, %Y' }}</th>
             <td>
-              {% if item.inline %}
+              {% if item.inline -%}
                 {{ item.content | remove: '<p>' | remove: '</p>' | emojify }}
-              {% else %}
-                <a class="news-title" href="{{ item.url | relative_url }}">{{ item.title }}</a>
-              {% endif %}
+            {%- else -%}
+                <a class="news-title" href="{{ item.url | relative_url }}">
+                {% if item.type == 'talk' %}
+                🗣️&nbsp;
+                {% elsif item.type == 'paper' %}
+                📄&nbsp;
+                {% elsif item.type == 'award' %}
+                🏆&nbsp;
+                {% elsif item.type == 'grant' %}
+                💰&nbsp;
+                {% elsif item.type == 'career_development' %}
+                🚀&nbsp;
+                {% elsif item.type == 'misc' %}
+                🎉&nbsp;
+                {% endif %}
+                {{ item.title }}
+                </a>
+            {%- endif %}
             </td>
           </tr>
         {% endfor %}
+        {% if news_size > news_limit %}
+          <tr>
+            <th scope="row"></th>
+            <td colspan="2"><a href="{{ '/news/' | relative_url }}">View more...</a></td>
+          </tr>
+        {% endif %}
       </table>
     </div>
   {% else %}

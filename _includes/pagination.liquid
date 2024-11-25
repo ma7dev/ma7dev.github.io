@@ -1,21 +1,70 @@
 {% if paginator.total_pages > 1 %}
-  <nav aria-label="Blog page navigation">
-    <ul class="pagination pagination-lg justify-content-center">
-      <li class="page-item {% unless paginator.previous_page %}disabled{% endunless %}">
-        <a class="page-link" href="{{ paginator.previous_page_path | relative_url }}" tabindex="-1" aria-disabled="{{ paginator.previous_page }}"
-          >Newer</a
-        >
+  <nav aria-label="Blog page navigation" class="pagination-container d-flex justify-content-center">
+    <ul class="pagination modern-pagination">
+      <li class="page-item prev-item {% unless paginator.previous_page %}disabled{% endunless %}">
+        <a class="page-link" href="{{ paginator.previous_page_path | relative_url }}" tabindex="-1" aria-disabled="{{ paginator.previous_page }}">
+          <i class="fa-solid fa-chevron-left"></i>
+          <span>Newer</span>
+        </a>
       </li>
+      
       {% if paginator.page_trail %}
         {% for trail in paginator.page_trail %}
-          <li class="page-item {% if page.url == trail.path %}active{% endif %}">
-            <a class="page-link" href="{{ trail.path | relative_url | remove: 'index.html' }}" title="{{ trail.title }}">{{ trail.num }}</a>
+          <li class="page-item number-item {% if page.url == trail.path %}active{% endif %}">
+            <a class="page-link" href="{{ trail.path | relative_url | remove: 'index.html' }}" title="{{ trail.title }}">
+              <span class="page-number">{{ trail.num }}</span>
+            </a>
           </li>
         {% endfor %}
       {% endif %}
-      <li class="page-item {% unless paginator.next_page %}disabled{% endunless %}">
-        <a class="page-link" href="{{ paginator.next_page_path | relative_url }}">Older</a>
+      
+      <li class="page-item next-item {% unless paginator.next_page %}disabled{% endunless %}">
+        <a class="page-link" href="{{ paginator.next_page_path | relative_url }}">
+          <span>Older</span>
+          <i class="fa-solid fa-chevron-right"></i>
+        </a>
       </li>
     </ul>
   </nav>
+
+  <style>
+    .modern-pagination {
+      display: flex;
+      gap: 0.5rem;
+      padding: 1rem;
+      border-radius: 1rem;
+      background: var(--global-bg-color);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .modern-pagination .page-item {
+      margin: 0;
+    }
+
+    .modern-pagination .page-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      border: none;
+      border-radius: 0.5rem;
+      color: var(--global-text-color);
+      background: transparent;
+      transition: all 0.2s ease;
+    }
+
+    .modern-pagination .page-link:hover {
+      background: var(--global-code-bg-color);
+    }
+
+    .modern-pagination .active .page-link {
+      background: var(--global-theme-color);
+      color: var(--global-bg-color);
+    }
+
+    .modern-pagination .disabled .page-link {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  </style>
 {% endif %}
