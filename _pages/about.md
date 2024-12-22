@@ -1,11 +1,11 @@
 ---
+layout: post
 nav: true
 nav_order: 3
 permalink: /about/me
-layout: post
 title: About
 date: 2022-03-21 08:57:00-0400
-updated: 2024-12-10 12:00:00-0400
+last_updated: 2024-12-22 12:00:00-0400
 category: Personal
 tags: []
 toc:
