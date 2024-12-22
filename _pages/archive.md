@@ -1,174 +1,190 @@
----
+<!-- ---
 layout: default
 permalink: /archive/
-title: archive
+title: Archive
 nav: true
 nav_order: 1
-pagination:
-  enabled: true
-  collection: posts
-  permalink: /page/:num/
-  per_page: 10
-  sort_field: date
-  sort_reverse: true
-  trail:
-    before: 1 # The number of links before the current page
-    after: 3 # The number of links after the current page
 ---
 <div class="post">
 
-{% assign blog_name_size = site.blog_name | size %}
-{% assign blog_description_size = site.blog_description | size %}
-
-{% if blog_name_size > 0 or blog_description_size > 0 %}
-  <div class="header-bar">
-    <h1>{{ site.blog_name }}</h1>
-    <h2>{{ site.blog_description }}</h2>
-  </div>
-{% endif %}
-
 <div class="tag-category-list">
     <div class="categories-section">
-        <h3>Categories</h3>
+        <h3><i class="fa-solid fa-tag fa-sm"></i> Categories</h3>
         <ul class="p-0 m-0">
-            {% assign categories = site.posts | map: "categories" | flatten | uniq | compact %}
-            {% assign category_counts = categories | map: downcase | group_by_exp: "item", "site.posts | where: 'categories', item | size" | sort: "name" | reverse %}
-            {% for count_group in category_counts %}
-                {% assign count = count_group.name | plus: 0 %}
-                {% for category in categories %}
-                    {% assign category_posts = site.posts | where: "categories", category %}
-                    {% if category_posts.size == count %}
-                        <li>
-                            <i class="fa-solid fa-tag fa-sm"></i> 
-                            <a href="{{ category | slugify | prepend: '/archive/category/' | relative_url }}">{{ category }}</a>
-                            <span class="count">({{ count }})</span>
-                        </li>
-                    {% endif %}
-                {% endfor %}
+            {% assign sorted_categories = site.posts | map: "categories" | flatten | uniq | compact | group_by_exp: "item", "item" | map: "name" | sort_by: "size" %}
+            {% for category in sorted_categories %}
+                {% assign count = site.posts | where: "categories", category | size %}
+                <li>
+                    <a href="{{ category | slugify | prepend: '/archive/category/' | relative_url }}">{{ category }}</a>
+                    <span class="count">({{ count }})</span>
+                </li>
             {% endfor %}
         </ul>
     </div>
 
     <div class="tags-section">
-        <h3>Tags</h3>
+        <h3><i class="fa-solid fa-hashtag fa-sm"></i> Tags</h3>
         <ul class="p-0 m-0">
-            {% assign tags = site.posts | map: "tags" | flatten | uniq | compact %}
-            {% assign tag_counts = tags | map: downcase | group_by_exp: "item", "site.posts | where: 'tags', item | size" | sort: "name" | reverse %}
-            {% for count_group in tag_counts %}
-                {% assign count = count_group.name | plus: 0 %}
-                {% for tag in tags %}
-                    {% assign tag_posts = site.posts | where: "tags", tag %}
-                    {% if tag_posts.size == count %}
-                        <li>
-                            <i class="fa-solid fa-hashtag fa-sm"></i>
-                            <a href="{{ tag | slugify | prepend: '/archive/tag/' | relative_url }}">{{ tag }}</a>
-                            <span class="count">({{ count }})</span>
-                        </li>
-                    {% endif %}
-                {% endfor %}
+            {% assign sorted_tags = site.posts | map: "tags" | flatten | uniq | compact | group_by_exp: "item", "item" | map: "name" | sort_by: "size" %}
+            {% for tag in sorted_tags %}
+                {% assign count = site.posts | where: "tags", tag | size %}
+                <li>
+                    <a href="{{ tag | slugify | prepend: '/archive/tag/' | relative_url }}">{{ tag }}</a>
+                    <span class="count">({{ count }})</span>
+                </li>
             {% endfor %}
         </ul>
     </div>
 </div>
 
-{% assign featured_posts = site.posts | where: "featured", "true" | where: "redirect", blank %}
-{% if featured_posts.size > 0 %}
-<br>
+<!-- custom plugin that creates sortable_date to sort posts by last_updated (if exists) or date (if not) -->
+{% assign sorted_posts = site.posts | sort: "sortable_date" | reverse %}
+<div class="archive-posts">
+    <div class="table-responsive">
+      <table class="table table-sm table-borderless">
+        {% for post in sorted_posts %}
+          <tr>
+            <th scope="row" style="width: 20%">
+              {% if post.last_updated %}
+                <span title="Created at {{ post.date | date: '%b %d, %Y' }} - Updated at {{ post.last_updated | date: '%b %d, %Y' }}">{{ post.last_updated | date: '%b %d, %Y' }}<br><sup class="text-muted">({{ post.date | date: '%b %d, %Y' }})</sup></span>
+              {% else %}
+                <span title="Created at {{ post.date | date: '%b %d, %Y' }}">{{ post.date | date: '%b %d, %Y' }}</span>
+              {% endif %}
+            </th>
+            <td>
+              {% if post.redirect == blank %}
+                <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              {% elsif post.redirect contains '://' %}
+                <a class="post-link" href="{{ post.redirect }}" target="_blank">{{ post.title }}</a>
+                  <svg width="2rem" height="2rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9"
+                      class="icon_svg-stroke"
+                      stroke="#999"
+                      stroke-width="1.5"
+                      fill="none"
+                      fill-rule="evenodd"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </svg>
+              {% else %}
+                <a class="post-link" href="{{ post.redirect | relative_url }}">{{ post.title }}</a>
+              {% endif %}
+                {% assign post_date_in_seconds = post.date | date: "%s" %}
+                {% assign current_date_in_seconds = site.time | date: "%s" %}
+                {% assign days_since = current_date_in_seconds | minus: post_date_in_seconds | divided_by: 86400 | floor %}
+                {% if days_since <= 30 %}<span title="New post (less than 30 days old)">🆕</span>{% endif %}
 
-<div class="container featured-posts">
-  {% assign is_even = featured_posts.size | modulo: 2 %}
-  <div class="row row-cols-{% if featured_posts.size <= 2 or is_even == 0 %}2{% else %}3{% endif %}">
-    {% for post in featured_posts %}
-    <div class="col mb-4">
-      <a href="{{ post.url | relative_url }}">
-        <div class="card hoverable">
-          <div class="row g-0">
-            <div class="col-md-12">
-              <div class="card-body">
-                <div class="float-right">
-                  <i class="fa-solid fa-thumbtack fa-xs"></i>
-                </div>
-                <h3 class="card-title text-lowercase">{{ post.title }}</h3>
-                <p class="card-text">{{ post.description }}</p>
+              {% if post.popular %}<span title="Popular post">🔥</span>{% endif %}
+              {% if post.featured %}<span title="Featured post">📌</span>{% endif %}
 
-                {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
-                {% assign year = post.date | date: "%Y" %}
-
-                <p class="post-meta">
-                  {{ read_time }} min read &nbsp; &middot; &nbsp;
-                  <a href="{{ year | prepend: '/archive/' | prepend: site.baseurl}}">
-                    <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
-                  </a>
-                </p>
+              <div class="post-metadata d-flex flex-wrap gap-3 mt-1">
+                {% assign words = post.content | number_of_words %}
+                {% assign read_time = words | divided_by: 180 | plus: 1 %}
+                <span class="reading-time text-muted">
+                  <i class="fa-regular fa-clock fa-sm me-1"></i> {{ read_time }} min read
+                </span>
+                &nbsp;
+                &nbsp;
+                {% if post.categories.size > 0 or post.redirect contains 'substack.com' %}
+                  <span class="categories">
+                    <i class="fa-solid fa-tag fa-sm"></i>
+                    {% if post.redirect contains 'substack.com' %}
+                      <a href="{{ 'newsletters' | slugify | prepend: '/archive/category/' | relative_url }}" class="text-decoration-none">Newsletter</a>
+                    {% endif %}
+                    {% for category in post.categories %}
+                      <a href="{{ category | slugify | prepend: '/archive/category/' | relative_url }}" class="text-decoration-none">{{ category }}</a>{% unless forloop.last %}, {% endunless %}
+                    {% endfor %}
+                  </span>
+                {% endif %}
+                &nbsp;
+                {% if post.tags.size > 0 %}
+                  <span class="tags">
+                    <i class="fa-solid fa-hashtag fa-sm"></i> {% for tag in post.tags %}<a href="{{ tag | slugify | prepend: '/archive/tag/' | relative_url }}" class="text-decoration-none">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}{% endfor %}
+                  </span>
+                {% endif %}
               </div>
-            </div>
-          </div>
-        </div>
-      </a>
+            </td>
+        </tr>
+        {% endfor %}
+      </table>
     </div>
-    {% endfor %}
-  </div>
 </div>
-<hr>
-{% endif %}
 
-{% if page.pagination.enabled %}
-  {% assign postlist = paginator.posts %}
-{% else %}
-  {% assign postlist = site.posts %}
-{% endif %}
+{% assign posts_by_year = sorted_posts | group_by_exp: "post", "post.sortable_date | date: '%Y'" %}
 
-{% assign posts_by_year = postlist | group_by_exp:"post", "post.date | date: '%Y'" %}
-
-<div class="archive-years">
+<!-- <div class="archive-years">
   {% for year in posts_by_year %}
     <h2 class="archive-year">{{ year.name }}</h2>
     <div class="table-responsive">
-      <table class="table table-hover">
+      <table class="table table-sm table-borderless">
         {% for post in year.items %}
-          {% assign read_time = post.content | number_of_words | divided_by: 180 | plus: 1 %}
-          {% assign tags = post.tags | join: "" %}
-          {% assign categories = post.categories | join: "" %}
-
           <tr>
-            <td style="width: 120px; vertical-align: top;">
-              {{ post.date | date: '%B %d' }}
-            </td>
+            <th scope="row" style="width: 20%">
+              {% if post.last_updated %}
+                <span title="Created at {{ post.date | date: '%b %d, %Y' }} - Updated at {{ post.last_updated | date: '%b %d, %Y' }}"><span class="text-muted">{{ post.date | date: '%b %d, %Y' }}</span> - <br> {{ post.last_updated | date: '%b %d, %Y' }}</span>
+              {% else %}
+                <span title="Created at {{ post.date | date: '%b %d, %Y' }}">{{ post.date | date: '%b %d, %Y' }}</span>
+              {% endif %}
+            </th>
             <td>
-              <div class="post-entry">
-                <h4 class="post-title mb-1">
-                  {% if post.redirect contains 'substack.com' %}
-                    <a href="{{ post.redirect }}" target="_blank">{{ post.title }}</a>
-                    <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 448 511.471" width="1.5rem" height="1.5rem" title="substack.com">
-                      <path fill="#FF681A" d="M0 0h448v62.804H0V0zm0 229.083h448v282.388L223.954 385.808 0 511.471V229.083zm0-114.542h448v62.804H0v-62.804z"/>
-                    </svg>
-                  {% else %}
-                    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-                  {% endif %}
-                </h4>
-                <p class="post-description mb-1">{{ post.description }}</p>
-                <div class="post-meta small">
-                  {{ read_time }} min read
-                  {% if post.redirect contains 'substack.com' %}
-                    &nbsp; &middot; &nbsp;
-                    <a href="{{ 'newsletter' | slugify | prepend: '/archive/category/' | prepend: site.baseurl}}" class="text-muted">
-                      <i class="fa-solid fa-tag fa-xs"></i> newsletter</a>
-                  {% endif %}
-                  {% if categories != "" %}
-                    &nbsp; &middot; &nbsp;
+              {% if post.redirect == blank %}
+                <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              {% elsif post.redirect contains '://' %}
+                <a class="post-link" href="{{ post.redirect }}" target="_blank">{{ post.title }}</a>
+                  <svg width="2rem" height="2rem" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M17 13.5v6H5v-12h6m3-3h6v6m0-6-9 9"
+                      class="icon_svg-stroke"
+                      stroke="#999"
+                      stroke-width="1.5"
+                      fill="none"
+                      fill-rule="evenodd"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </svg>
+              {% else %}
+                <a class="post-link" href="{{ post.redirect | relative_url }}">{{ post.title }}</a>
+              {% endif %}
+                {% assign post_date_in_seconds = post.date | date: "%s" %}
+                {% assign current_date_in_seconds = site.time | date: "%s" %}
+                {% assign days_since = current_date_in_seconds | minus: post_date_in_seconds | divided_by: 86400 | floor %}
+                {% if days_since <= 30 %}<span title="New post (less than 30 days old)">🆕</span>{% endif %}
+
+              {% if post.popular %}<span title="Popular post">🔥</span>{% endif %}
+              {% if post.featured %}<span title="Featured post">📌</span>{% endif %}
+
+              <div class="post-metadata d-flex flex-wrap gap-3 mt-1">
+                {% assign words = post.content | number_of_words %}
+                {% assign read_time = words | divided_by: 180 | plus: 1 %}
+                <span class="reading-time text-muted">
+                  <i class="fa-regular fa-clock fa-sm me-1"></i> {{ read_time }} min read
+                </span>
+                &nbsp;
+                &nbsp;
+                {% if post.categories.size > 0 or post.redirect contains 'substack.com' %}
+                  <span class="categories">
+                    {% if post.redirect contains 'substack.com' %}
+                      <i class="fa-solid fa-tag fa-sm"></i>
+                      <a href="{{ 'newsletters' | slugify | prepend: '/archive/category/' | relative_url }}" class="text-decoration-none">Newsletter</a>
+                    {% endif %}
                     {% for category in post.categories %}
-                      <a href="{{ category | slugify | prepend: '/archive/category/' | prepend: site.baseurl}}" class="text-muted">
-                        <i class="fa-solid fa-tag fa-xs"></i> {{ category }}</a>{% unless forloop.last %}, {% endunless %}
+                      <i class="fa-solid fa-tag fa-sm"></i>
+                      <a href="{{ category | slugify | prepend: '/archive/category/' | relative_url }}" class="text-decoration-none">{{ category }}</a>{% unless forloop.last %} · {% endunless %}
                     {% endfor %}
-                  {% endif %}
-                  {% if tags != "" %}
-                    &nbsp; &middot; &nbsp;
+                  </span>
+                {% endif %}
+                &nbsp;
+                {% if post.tags.size > 0 %}
+                  <span class="tags">
                     {% for tag in post.tags %}
-                      <a href="{{ tag | slugify | prepend: '/archive/tag/' | prepend: site.baseurl}}" class="text-muted">
-                        <i class="fa-solid fa-hashtag fa-xs"></i> {{ tag }}</a>{% unless forloop.last %}, {% endunless %}
+                      <i class="fa-solid fa-hashtag fa-sm"></i>
+                      <a href="{{ tag | slugify | prepend: '/archive/tag/' | relative_url }}" class="text-decoration-none">{{ tag }}</a>{% unless forloop.last %} · {% endunless %}
                     {% endfor %}
-                  {% endif %}
-                </div>
+                  </span>
+                {% endif %}
               </div>
             </td>
           </tr>
@@ -176,10 +192,10 @@ pagination:
       </table>
     </div>
   {% endfor %}
-</div>
+</div> -->
 
 {% if page.pagination.enabled %}
   {% include pagination.liquid %}
 {% endif %}
 
-</div>
+</div> -->

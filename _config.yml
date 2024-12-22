@@ -171,8 +171,8 @@ disqus_shortname: al-folio # put your disqus shortname
 # If you have blog posts published on medium.com or other external sources,
 # you can display them in your blog by adding a link to the RSS feed.
 external_sources:
-  - name: substack.com
-    rss_url: https://ma7dev.substack.com/feed
+  # - name: medium.com
+  #   rss_url: https://medium.com/@ma7dev/feed
 
 # -----------------------------------------------------------------------------
 # Newsletter
@@ -189,7 +189,7 @@ newsletter:
 
 # TOOD: remove this???
 collections:
-  news:
+  announcements:
     defaults:
       layout: post
     output: true
@@ -197,31 +197,6 @@ collections:
   projects:
     output: true
     permalink: /:collection/:title/
-
-announcements:
-  enabled: true
-  scrollable: true # adds a vertical scroll bar if there are more than 3 news items
-  limit: 5 # leave blank to include all the news in the `_news` folder
-
-latest_posts:
-  enabled: true
-  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
-  limit: 5 # leave blank to include all the blog posts
-
-popular_posts:
-  enabled: true
-  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
-  limit: 5 # leave blank to include all the blog posts
-
-featured_posts:
-  enabled: true
-  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
-  limit: 5 # leave blank to include all the blog posts
-
-latest_posts_per_category:
-  enabled: true
-  scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
-  limit: 5 # leave blank to include all the blog posts
 
 # -----------------------------------------------------------------------------
 # Jekyll settings
@@ -241,7 +216,7 @@ kramdown:
       start_line: 1
 
 # Includes & excludes
-include: ["_pages"]
+include: ["_pages", "_announcements"]
 exclude:
   - bin/
   - CONTRIBUTING.md
@@ -308,24 +283,35 @@ jekyll-minifier:
 # Jekyll Archives
 # -----------------------------------------------------------------------------
 
+# jekyll-archives:
+#   enabled: [year, tags, categories] # enables year, tag and category archives (remove if you need to disable one of them).
+#   layouts:
+#     year: archive-year
+#     tag: archive-tag
+#     category: archive-category
+#   permalinks:
+#     year: "/archive/:year/"
+#     tag: "/archive/tag/:name/"
+#     category: "/archive/category/:name/"
 jekyll-archives:
-  enabled: [year, tags, categories] # enables year, tag and category archives (remove if you need to disable one of them).
+  enabled: [tags, categories] # enables year, tag and category archives (remove if you need to disable one of them).
   layouts:
-    year: archive-year
     tag: archive-tag
     category: archive-category
   permalinks:
-    year: "/archive/:year/"
     tag: "/archive/tag/:name/"
     category: "/archive/category/:name/"
+
+display_tags: ["formatting", "images", "links", "math", "code", "blockquotes"] # these tags will be displayed on the front page of your blog
+display_categories: ["external-services"] # these categories will be displayed on the front page of your blog
 
 # -----------------------------------------------------------------------------
 # Jekyll Scholar
 # -----------------------------------------------------------------------------
 
 scholar:
-  last_name: [Einstein]
-  first_name: [Albert, A.]
+  last_name: [Alotaibi]
+  first_name: [Mazen]
 
   style: apa
   locale: en

@@ -1,4 +1,4 @@
-<div class="news">
+<div class="announcements">
   {% if site.newsletter != blank %}
     {% assign newsletter_size = site.posts | where_exp: "item", "item.redirect contains 'substack.com'" | size %}
     <div
@@ -31,6 +31,13 @@
                   stroke-linejoin="round"
                 ></path>
               </svg>
+                {% assign post_date_in_seconds = item.date | date: "%s" %}
+                {% assign current_date_in_seconds = site.time | date: "%s" %}
+                {% assign days_since = current_date_in_seconds | minus: post_date_in_seconds | divided_by: 86400 | floor %}
+                {% if days_since <= 30 %}<span title="New post (less than 30 days old)">🆕</span>{% endif %}
+
+              {% if item.popular %}<span title="Popular post">🔥</span>{% endif %}
+              {% if item.featured %}<span title="Featured post">📌</span>{% endif %}
             </td>
           </tr>
         {% endfor %}

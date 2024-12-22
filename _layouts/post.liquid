@@ -12,53 +12,41 @@ layout: default
   </style>
 {% endif %}
 
-{% assign url_beginning = page.url | slice: 0, 6 %}
-
 <div class="post">
-  <header class="post-header">
+  <header class="post-header text-center">
     <h1 class="post-title">{{ page.title }}</h1>
     <p class="post-meta">
-      Created in {{ page.date | date: '%B %d, %Y' }}
-      {% if page.author %}by {{ page.author }}{% endif %}
-      {% if page.last_updated %}, last updated in {{ page.last_updated | date: '%B %d, %Y' }}{% endif %}
-      {% if page.meta %}• {{ page.meta }}{% endif %}
-    </p>
-    <p class="post-tags">
-      {% if url_beginning == '/archive/' %}
-        <a href="{{ year | prepend: '/archive/' | prepend: site.baseurl}}"> <i class="fa-solid fa-calendar fa-sm"></i> {{ year }} </a>
-      {% else %}
-        <i class="fa-solid fa-calendar fa-sm"></i> {{ year }}
-      {% endif %}
-      {% if tags != '' %}
-        &nbsp; &middot; &nbsp;
-        {% for tag in page.tags %}
-          {% if url_beginning == '/archive/' %}
-            <a href="{{ tag | slugify | prepend: '/archive/tag/' | prepend: site.baseurl}}"> <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}</a>
-          {% else %}
-            <i class="fa-solid fa-hashtag fa-sm"></i> {{ tag }}
-          {% endif %}
-          {% unless forloop.last %}
-            &nbsp;
-          {% endunless %}
-        {% endfor %}
-      {% endif %}
-
-      {% if categories != '' %}
-        &nbsp; &middot; &nbsp;
+    {% if categories != '' %}
+        <i class="fa-solid fa-tag fa-sm"></i> 
         {% for category in page.categories %}
-          {% if url_beginning == '/archive/' %}
             <a href="{{ category | slugify | prepend: '/archive/category/' | prepend: site.baseurl}}">
-              <i class="fa-solid fa-tag fa-sm"></i> {{ category -}}
-            </a>
-          {% else %}
-            <i class="fa-solid fa-tag fa-sm"></i> {{ category }}
-          {% endif %}
-          {% unless forloop.last %}
-            &nbsp;
-          {% endunless %}
+                {{ category -}}
+            </a>{% unless forloop.last %}, {% endunless %}
         {% endfor %}
-      {% endif %}
+    {% endif %}
+    &nbsp;
+    {% if tags != '' %}
+        <i class="fa-solid fa-hashtag fa-sm"></i>
+        {% for tag in page.tags %}
+            <a href="{{ tag | slugify | prepend: '/archive/tag/' | prepend: site.baseurl}}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
+        {% endfor %}
+        {% endif %}
+        <br>
+      <span title="Created at {{ page.date | date: '%b %d, %Y' }}">{{ page.date | date: '%b %d, %Y' }}</span>
+        {% if page.last_updated %} 
+            {% assign post_date_in_seconds = page.date | date: "%s" %}
+            {% assign updated_date_in_seconds = page.last_updated | date: "%s" %}
+            {% assign days_since = updated_date_in_seconds | minus: post_date_in_seconds | divided_by: 86400 | floor %}
+            {% if days_since > 0 %}
+                {% assign years = days_since | divided_by: 365 | floor %}
+                {% assign remaining_days = days_since | modulo: 365 %}
+                {% assign months = remaining_days | divided_by: 30 | floor %}
+                {% assign days = remaining_days | modulo: 30 %}
+                <span class="text-muted">-({% if years > 0 %}{{ years }} year{% if years > 1 %}s{% endif %}{% endif %}{% if months > 0 %}{% if years > 0 %}, {% endif %}{{ months }} month{% if months > 1 %}s{% endif %}{% endif %}{% if days > 0 %}{% if years > 0 or months > 0 %}, {% endif %}{{ days }} day{% if days > 1 %}s{% endif %}{% endif %})-</span> <span title="Updated at {{ page.last_updated | date: '%b %d, %Y' }}"><a href="https://github.com/{{ site.github_username }}/{{ site.github_username }}.github.io/commits/main/{{ page.path }}">{{ page.last_updated | date: '%b %d, %Y' }}</a></span>
+            {% endif %}
+        {% endif %}
     </p>
+    <hr>
   </header>
 
   <article class="post-content">
@@ -82,12 +70,6 @@ layout: default
     <div class="publications">
       {% bibliography --cited_in_order %}
     </div>
-  {% endif %}
-
-  {% if site.related_blog_posts.enabled %}
-    {% if page.related_posts == null or page.related_posts %}
-      {% include related_posts.liquid %}
-    {% endif %}
   {% endif %}
 
   {% if site.disqus_shortname and page.disqus_comments %}

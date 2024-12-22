@@ -17,7 +17,7 @@ layout: default
   <article>
     {% if page.profile %}
       <div class="profile float-{% if page.profile.align == 'left' %}left{% else %}right{% endif %}">
-        {%- comment -%} {% if page.profile.image %}
+        {% if page.profile.image %}
           {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
           {% if page.profile.image_circular %}
             {% assign profile_image_class = 'img-fluid z-depth-1 rounded-circle' %}
@@ -31,7 +31,7 @@ layout: default
             include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes=sizes alt=page.profile.image
             cache_bust=true
           %}
-        {% endif %} {%- endcomment -%}
+        {% endif %}
         {% if page.profile.more_info %}
           <div class="more-info">{{ page.profile.more_info }}</div>
         {% endif %}
@@ -40,12 +40,26 @@ layout: default
 
     <div class="clearfix">{{ content }}</div>
 
-    <!-- News -->
-    {% if page.news and site.announcements.enabled %}
+    <!-- Latest posts -->
+    {% if page.latest_posts %}
       <h2>
-        <a href="{{ '/news/' | relative_url }}" style="color: inherit">News</a>
+        <a href="{{ '/archive/' | relative_url }}" style="color: inherit">Latest Posts</a>
       </h2>
-      {% include news.liquid limit=true %}
+      {% include list_posts.liquid type="latest" scrollable=true limit=5 %}
+    {% endif %}
+
+    <!-- announcements -->
+    {% if page.announcements %}
+      <h2>
+        <a href="{{ '/announcements/' | relative_url }}" style="color: inherit">Announcements</a>
+      </h2>
+        🗣️ talk 
+        <!-- | 📄 paper  -->
+        | 🏆 award 
+        <!-- | 💰 grant  -->
+        | 🚀 career 
+        <!-- | 🎉 misc -->
+      {% include announcements.liquid scrollable=true limit=3 %}
     {% endif %}
 
     <!-- Selected papers -->
@@ -53,51 +67,24 @@ layout: default
       <h2>
         <a href="{{ '/publications/' | relative_url }}" style="color: inherit">Selected Publications</a>
       </h2>
-      {% include selected_papers.liquid %}
-    {% endif %}
-
-    <!-- Latest newsletter -->
-    {% if page.newsletter %}
-      <h2>
-        <a href="{{ '/newsletter/' | relative_url }}" style="color: inherit">Latest Newsletter</a>
-        <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 448 511.471" width="1.5rem" height="1.5rem" title="substack.com">
-          <path fill="#FF681A" d="M0 0h448v62.804H0V0zm0 229.083h448v282.388L223.954 385.808 0 511.471V229.083zm0-114.542h448v62.804H0v-62.804z"/>
-        </svg>
-      </h2>
-      {% include newsletter.liquid %}
-    {% endif %}
-
-    <!-- Latest posts -->
-    {% if site.latest_posts.enabled %}
-      <h2>
-        <a href="{{ '/archive/' | relative_url }}" style="color: inherit">Latest Posts</a>
-      </h2>
-      {% include latest_posts.liquid %}
+      {% include selected_papers.liquid scrollable=true limit=5 %}
     {% endif %}
 
     <!-- popular posts -->
-    {% if site.popular_posts.enabled %}
+    {% if page.popular_posts %}
       <h2>
         <a href="{{ '/archive/' | relative_url }}" style="color: inherit">Popular Posts</a>
       </h2>
-      {% include popular_posts.liquid %}
+      {% include list_posts.liquid type="popular" scrollable=true limit=5 %}
     {% endif %}
 
     <!-- featured posts -->
-    {% if site.notable_posts.enabled %}
+    {% if page.featured_posts %}
       <h2>
         <a href="{{ '/archive/featured/' | relative_url }}" style="color: inherit">Featured Posts</a>
       </h2>
-      {% include featured_posts.liquid %}
+      {% include list_posts.liquid type="featured" scrollable=true limit=5 %}
     {% endif %}
-
-    <!-- latest posts per category -->
-    {%- comment -%} {% if site.latest_posts_per_category.enabled %}
-      <h2>
-        <a href="{{ '/archive/' | relative_url }}" style="color: inherit">Latest Posts per Category</a>
-      </h2>
-      {% include latest_posts_per_category.liquid %}
-    {% endif %} {%- endcomment -%}
 
     <!-- Social -->
     {% if page.social %}
@@ -108,8 +95,8 @@ layout: default
       </div>
     {% endif %}
 
-    {% if site.newsletter.enabled and site.footer_fixed %}
-      {% include scripts/newsletter.liquid center=true %}
+    {% if site.announcementsletter.enabled and site.footer_fixed %}
+      {% include scripts/announcementsletter.liquid %}
     {% endif %}
   </article>
 </div>
