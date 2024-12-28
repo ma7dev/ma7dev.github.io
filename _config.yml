@@ -112,7 +112,7 @@ zotero_username: # your zotero username
 substack_url: https://ma7dev.substack.com # your substack username
 
 contact_note: >
-  Check out <a href="/about/#contact">contact section</a> for more ways to get in touch.
+  Check out <a href="/about/me/#contact">contact section</a> for more ways to get in touch.
 
 # -----------------------------------------------------------------------------
 # Analytics and search engine verification
