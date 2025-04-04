@@ -37,7 +37,7 @@
                 {% if days_since <= 30 %}<span title="New post (less than 30 days old)">🆕</span>{% endif %}
 
               {% if item.popular %}<span title="Popular post">🔥</span>{% endif %}
-              {% if item.featured %}<span title="Featured post">📌</span>{% endif %}
+              {% if item.highlight %}<span class="post-badge highlight">highlight</span>{% endif %}
             </td>
           </tr>
         {% endfor %}

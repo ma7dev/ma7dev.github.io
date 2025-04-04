@@ -8,17 +8,31 @@ profile:
   image: prof_pic-1400.webp
   image_circular: true # crops the image to make it circular
   more_info: ""
-announcements: true # includes a list of news items
-latest_posts: false # includes a list of latest posts
-popular_posts: false # includes a list of popular posts
-featured_posts: false # includes a list of featured posts
-selected_papers: false # includes a list of papers marked as "selected={true}"
-social: true # includes social icons at the bottom of the page
-newsletter: true # includes a list of latest newsletter
+social: true
 ---
 
-This is the website of **Mazen Alotaibi**. I write about AI, Software Engineering, and other things that I find interesting. 
+I write about AI, Software Engineering, and technology trends. I share insights from my experiences as a developer and researcher.
 
-You can find my notes [here](https://notes.ma7.dev) (only a few can access it at the moment).
+This website includes my articles, projects, and thoughts on various topics. The content is organized by categories, with sections for newest posts, popular content, and highlighted works that I consider particularly noteworthy.
 
-For my latest posts, please refer to the [posts page](/archive); for my latest announcements about me, please refer to the [announcements page](/announcements); for information about personal and professional background, please refer to the [about me page](/about/me).
+You can find my personal notes [here](https://notes.ma7.dev) (private access only). For more about me and this site, see the [About Me](/me) page.
+
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function initTheme() {
+      const userPref = localStorage.getItem('theme');
+      if (userPref === 'dark') {
+        document.body.classList.add('dark-mode');
+      } else if (userPref === 'light') {
+        document.body.classList.add('light-mode');
+      } else {
+        // Default or system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark-mode');
+        }
+      }
+    }
+    
+    initTheme();
+  });
+</script> -->

@@ -2,6 +2,175 @@
  * Styles for the base elements of the theme.
  ******************************************************************************/
 
+// Light mode defaults
+:root {
+  --text-color: var(--global-text-color);
+  --bg-color: var(--global-bg-color);
+  --x-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+// Apply dark mode styles to body when html has data-theme="dark"
+html[data-theme="dark"] body:not(.x-dark-mode) {
+  background-color: var(--global-x-background);
+  color: var(--global-x-text);
+}
+
+// X-style theming - body class takes precedence over data-theme
+body.x-dark-mode {
+  background-color: var(--global-x-background);
+  color: var(--global-x-text);
+  
+  p, h1, h2, h3, h4, h5, h6, span, div, li, em, strong {
+    color: var(--global-x-text);
+  }
+  
+  a {
+    color: var(--global-x-accent);
+    
+    &:hover {
+      color: var(--global-x-accent-hover);
+    }
+  }
+  
+  #navbar, .container {
+    background-color: var(--global-x-background);
+  }
+  
+  .navbar {
+    background-color: rgba(0, 0, 0, 0.95) !important;
+    border-bottom: 1px solid var(--global-x-border);
+    
+    .navbar-brand {
+      color: var(--global-x-text) !important;
+    }
+    
+    .navbar-nav .nav-item .nav-link {
+      color: var(--global-x-text) !important;
+      
+      &:hover {
+        color: var(--global-x-accent) !important;
+      }
+      
+      &.active {
+        color: var(--global-x-accent) !important;
+      }
+    }
+  }
+  
+  .page-description {
+    color: var(--global-x-text);
+  }
+  
+  .footer {
+    background-color: var(--global-x-background);
+    border-top: 1px solid var(--global-x-border);
+    color: var(--global-x-text);
+    
+    a {
+      color: var(--global-x-accent);
+      
+      &:hover {
+        color: var(--global-x-accent-hover);
+      }
+    }
+  }
+
+  // Dark mode for code elements
+  pre, code {
+    background-color: var(--global-x-code-bg) !important;
+    border-color: var(--global-x-border) !important;
+    color: var(--global-x-text) !important;
+  }
+  
+  // Dark mode for tables
+  table {
+    color: var(--global-x-text);
+    
+    th, td {
+      border-color: var(--global-x-border);
+    }
+    
+    thead th {
+      background-color: var(--global-x-code-bg);
+      border-color: var(--global-x-border);
+    }
+    
+    // tbody tr:nth-of-type(odd) {
+    //   background-color: rgba(255, 255, 255, 0.05);
+    // }
+  }
+  
+  // Dark mode for blockquotes
+  blockquote {
+    background-color: var(--global-x-code-bg);
+    border-left-color: var(--global-x-accent);
+  }
+  
+  // Dark mode for horizontal rules
+  hr {
+    border-top-color: var(--global-x-border);
+  }
+  
+  // Dark mode for cards and other UI elements
+  .card {
+    background-color: var(--global-x-code-bg);
+    border-color: var(--global-x-border);
+    
+    .card-header, .card-footer {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-color: var(--global-x-border);
+    }
+  }
+  
+  // Form controls in dark mode
+  input, select, textarea {
+    background-color: var(--global-x-background);
+    border-color: var(--global-x-border);
+    color: var(--global-x-text);
+    
+    &:focus {
+      background-color: var(--global-x-background);
+      border-color: var(--global-x-accent);
+      color: var(--global-x-text);
+    }
+  }
+  
+  // Search elements
+  .search-row {
+    border-color: var(--global-x-border);
+  }
+  
+  #results-container li {
+    background-color: var(--global-x-code-bg);
+    
+    &:hover {
+      background-color: var(--global-x-border);
+    }
+  }
+  
+  // Pagination
+  .pagination {
+    .page-item {
+      .page-link {
+        background-color: var(--global-x-background);
+        border-color: var(--global-x-border);
+        color: var(--global-x-text);
+        
+        &:hover {
+          background-color: var(--global-x-code-bg);
+          color: var(--global-x-accent);
+        }
+      }
+      
+      &.active .page-link {
+        background-color: var(--global-x-accent);
+        border-color: var(--global-x-accent);
+        color: var(--global-x-text);
+      }
+    }
+  }
+}
+
 // Typography
 
 p,
@@ -16,7 +185,7 @@ div,
 li,
 span,
 strong {
-  color: var(--global-text-color);
+  color: var(--text-color);
 }
 
 hr {
@@ -134,18 +303,105 @@ blockquote {
 
 // Checklist
 
-ul.task-list {
-  list-style-type: none; /* Remove bullets from all levels */
+.task-list {
+  list-style-type: none;
+  padding-left: 0.5rem;
+  margin-left: 0;
 }
 
-ul.task-list > li ul {
-  /* Nested lists within .task-list */
-  padding-inline-start: 1.5rem;
+.task-list-item {
+  position: relative;
+  padding-left: 2.25rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
 }
 
-ul.task-list input[type="checkbox"] {
-  margin: 0.275rem 0.5rem 0.5rem -1rem;
-  vertical-align: middle;
+.task-list .task-list {
+  margin-top: 0.75rem;
+  padding-left: 1.5rem;
+}
+
+/* Style for the native checkbox (visually hidden) */
+.task-list-item-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  position: absolute;
+  left: 0;
+  top: 0.25rem;
+  margin: 0;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  opacity: 0;
+  z-index: 2;
+  cursor: pointer;
+}
+
+/* Create the custom checkbox design */
+.task-list-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 4px;
+  border: 1.5px solid var(--global-theme-color);
+  background-color: var(--global-bg-color);
+  z-index: 1;
+  transition: all 0.2s ease;
+}
+
+/* Style for checked items */
+.task-list-item:has(> .task-list-item-checkbox:checked)::before {
+  background-color: var(--global-theme-color);
+  border-color: var(--global-theme-color);
+}
+
+/* Add the checkmark for checked items */
+.task-list-item:has(> .task-list-item-checkbox:checked)::after {
+  content: '';
+  position: absolute;
+  left: 0.45rem;
+  top: 0.6rem;
+  width: 0.35rem;
+  height: 0.7rem;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  z-index: 1;
+}
+
+/* Styles specifically for browsers that don't support :has() */
+.task-list-item-checkbox:checked + *::before,
+.task-list-item-checkbox:checked ~ *::before {
+  background-color: var(--global-theme-color);
+  border-color: var(--global-theme-color);
+}
+
+.task-list-item-checkbox:checked + *::after,
+.task-list-item-checkbox:checked ~ *::after {
+  content: '';
+  position: absolute;
+  left: 0.45rem;
+  top: 0.6rem;
+  width: 0.35rem;
+  height: 0.7rem;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  z-index: 1;
+}
+
+/* Hover effect */
+.task-list-item:hover::before {
+  border-color: var(--global-hover-color);
+  box-shadow: 0 0 0 2px rgba(var(--global-theme-color-rgb), 0.1);
+}
+
+/* Animation for checkbox state changes */
+.task-list-item::before,
+.task-list-item::after {
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 // Math
@@ -377,6 +633,17 @@ ul.task-list input[type="checkbox"] {
   }
 }
 
+// X-style dark mode specific toggle button
+body.x-dark-mode {
+  #light-toggle {
+    color: var(--global-x-text);
+    
+    &:hover {
+      color: var(--global-x-accent);
+    }
+  }
+}
+
 // Social (bottom)
 
 .social {
@@ -566,8 +833,6 @@ footer.sticky-bottom {
     .post-tags {
       color: var(--global-text-color-light);
       font-size: 0.875rem;
-      padding-top: 0.25rem;
-      padding-bottom: 0;
     }
 
     a {
@@ -832,31 +1097,66 @@ footer.sticky-bottom {
   }
 }
 
-// Rouge Color Customization
-figure.highlight {
-  margin: 0 0 1rem;
+// Enhanced code blocks 
+pre, code {
+  background-color: var(--global-x-code-bg) !important;
+  border-radius: 4px;
+  font-family: 'Fira Code', 'JetBrains Mono', 'Roboto Mono', Menlo, Monaco, 'Courier New', monospace;
+  font-size: 0.9em;
+  line-height: 1.5;
 }
 
-pre {
-  color: var(--global-theme-color);
-  background-color: var(--global-code-bg-color);
+figure.highlight {
+  margin: 1.5rem 0;
+  padding: 0;
+  overflow: hidden;
   border-radius: 6px;
-  padding: 6px 12px;
-
-  pre,
-  code {
-    background-color: transparent;
-    border-radius: 0;
-    margin-bottom: 0;
-    padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  pre {
+    margin: 0;
+    padding: 1rem;
+    overflow-x: auto;
+    background-color: var(--global-code-bg-color);
+    
+    code {
+      background-color: transparent !important;
+      padding: 0;
+    }
+  }
+  
+  .lineno {
+    display: inline-block;
+    padding: 0 0.75rem;
+    margin-right: 0.5rem;
+    text-align: right;
+    color: var(--global-text-color-light);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.03);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  .code {
+    padding-left: 0;
   }
 }
 
-code {
-  color: var(--global-theme-color);
-  background-color: var(--global-code-bg-color);
-  border-radius: 3px;
-  padding: 3px 3px;
+// Different language badges
+figure.highlight::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  background-color: var(--global-theme-color);
+  border-bottom-left-radius: 6px;
+  opacity: 0.9;
 }
 
 // Transitioning Themes
@@ -879,8 +1179,6 @@ html.transition *:after {
   .post-tags {
     color: var(--global-text-color-light);
     font-size: 0.875rem;
-    padding-top: 0.25rem;
-    padding-bottom: 1rem;
 
     a {
       color: var(--global-text-color-light);
@@ -1061,7 +1359,7 @@ nav[data-toggle="toc"] {
   }
 }
 
-.featured-posts {
+.highlight-posts {
   a {
     color: var(--global-text-color-light);
     text-decoration: none;
@@ -1303,4 +1601,144 @@ ninja-keys::part(ninja-input-wrapper) {
 ::highlight(search) {
   background-color: var(--global-theme-color);
   color: var(--global-text-color);
+}
+
+// X-like styling
+.x-home-container {
+  font-family: var(--x-font);
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.x-profile-header {
+  display: flex;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--global-x-border);
+}
+
+.x-profile-image-container {
+  flex: 0 0 120px;
+}
+
+.x-profile-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border: 4px solid var(--global-x-background);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.x-profile-info {
+  flex: 1;
+  padding-left: 20px;
+}
+
+.x-profile-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  font-family: var(--x-font);
+  color: var(--global-x-text);
+}
+
+.x-verified-badge {
+  color: var(--global-x-accent);
+  margin-left: 5px;
+  font-size: 1rem;
+}
+
+.x-profile-handle {
+  color: var(--global-x-text-light);
+  margin: 0;
+  font-size: 1rem;
+}
+
+.x-profile-bio {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: var(--global-x-text);
+}
+
+.x-profile-social {
+  margin-top: 15px;
+}
+
+.x-tabs {
+  display: flex;
+  justify-content: flex-start;
+  border-bottom: 1px solid var(--global-x-border);
+  margin-bottom: 15px;
+  overflow-x: auto;
+  font-family: var(--x-font);
+}
+
+.x-tab {
+  padding: 15px 25px;
+  font-weight: bold;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  color: var(--global-x-text);
+}
+
+.x-tab.active {
+  color: var(--global-x-accent);
+}
+
+.x-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: var(--global-x-accent);
+  border-radius: 2px 2px 0 0;
+}
+
+@media (max-width: 768px) {
+  .x-profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .x-profile-info {
+    padding-left: 0;
+    margin-top: 15px;
+  }
+  
+  .x-profile-name {
+    justify-content: center;
+  }
+}
+
+// Clickable Headers
+h1, h2, h3, h4, h5, h6 {
+    position: relative;
+
+    .header-link {
+        color: inherit;
+        text-decoration: none;
+        display: block;
+
+        &:hover {
+            color: var(--global-theme-color);
+            text-decoration: none;
+        }
+
+        .header-anchor {
+            opacity: 0;
+            color: var(--global-theme-color);
+            margin-left: 0.5rem;
+            font-weight: normal;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        &:hover .header-anchor {
+            opacity: 1;
+        }
+    }
 }

@@ -1,0 +1,124 @@
+---
+layout: default
+---
+
+<div class="x-home-container">
+  <header class="post-header x-dark">
+    <h1 class="post-title">{{ page.title }}</h1>
+    <p class="category-description">Posts in the {{ page.type }} category</p>
+  </header>
+
+  <div class="category-filters">
+    <a href="{{ '/articles/' | relative_url }}" class="category-filter {% if page.type == 'article' %}active{% endif %} article">Articles</a>
+    <a href="{{ '/announcements/' | relative_url }}" class="category-filter {% if page.type == 'announcement' %}active{% endif %} announcement">Announcements</a>
+  </div>
+
+  <!-- Timeline feed similar to X -->
+  <div class="x-timeline">
+    <div class="x-section-visible">
+      <div class="posts-list">
+        <!-- Pinned post -->
+        {% assign pinned_post = site.posts | where: "pinned", true | where_exp: "post", "post.categories contains page.type" | first %}
+        {% if pinned_post %}
+        <div class="pinned-post-badge">
+          <i class="fa-solid fa-thumbtack"></i> Pinned
+        </div>
+        {% include post-card.liquid post=pinned_post %}
+        <hr class="divider">
+        {% endif %}
+
+        <!-- Regular posts -->
+        {% assign filtered_posts = site.posts | where_exp: "post", "post.categories contains page.type" | where_exp: "post", "post.pinned != true" | sort: "date" | reverse %}
+        
+        {% if filtered_posts.size == 0 %}
+          <p class="no-posts">No posts in this category yet.</p>
+        {% else %}
+          {% for post in filtered_posts %}
+            {% include post-card.liquid post=post %}
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .x-home-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  .post-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .post-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--global-x-text);
+  }
+  
+  .category-description {
+    color: var(--global-x-text-light);
+    margin-bottom: 1rem;
+  }
+  
+  .no-posts {
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--global-x-text-light);
+  }
+  
+  .x-section-visible {
+    display: block;
+  }
+  
+  .pinned-post-badge {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--global-x-text-light);
+  }
+  
+  .divider {
+    margin: 1.5rem 0;
+    border-top: 1px solid var(--global-x-border);
+  }
+  
+  .x-timeline {
+    background-color: var(--global-x-background);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .posts-list {
+    padding: 1rem;
+  }
+
+  /* Match home page post card styling */
+  .post-card {
+    margin-bottom: 1rem;
+  }
+</style>
+
+{%- comment -%} <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    function initTheme() {
+      const userPref = localStorage.getItem('theme');
+      if (userPref === 'dark') {
+        document.body.classList.add('dark-mode');
+      } else if (userPref === 'light') {
+        document.body.classList.add('light-mode');
+      } else {
+        // Default or system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark-mode');
+        }
+      }
+    }
+    
+    initTheme();
+  });
+</script>  {%- endcomment -%}

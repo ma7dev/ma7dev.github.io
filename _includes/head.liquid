@@ -1,3 +1,30 @@
+<!-- Prevent flash of unstyled content when switching themes -->
+{%- comment -%} <script>
+  (function() {
+    // Get the saved theme from localStorage
+    var savedTheme = localStorage.getItem("theme") || "system";
+    var theme = savedTheme;
+    
+    // If system theme, check user preference
+    if (theme === "system") {
+      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        theme = "dark";
+      } else {
+        theme = "light";
+      }
+    }
+    
+    // Add the x-dark-mode class to body if theme is dark
+    if (theme === "dark") {
+      document.addEventListener("DOMContentLoaded", function() {
+        document.body.classList.add("x-dark-mode");
+      });
+      // Also try to set it immediately with a fallback
+      document.write('<style>body { background-color: #000000 !important; } html { background-color: #000000 !important; }</style>');
+    }
+  })();
+</script> {%- endcomment -%}
+
 <!-- Metadata, OpenGraph and Schema.org -->
 {% include metadata.liquid %}
 
@@ -104,14 +131,14 @@
     crossorigin="anonymous"
     media="screen and (prefers-color-scheme: light)"
   >
-  <link
+  {%- comment -%} <link
     defer
     rel="stylesheet"
     href="{{ site.third_party_libraries.highlightjs.url.css.dark }}"
     integrity="{{ site.third_party_libraries.highlightjs.integrity.css.dark }}"
     crossorigin="anonymous"
     media="screen and (prefers-color-scheme: dark)"
-  >
+  > {%- endcomment -%}
   <link
     defer
     rel="stylesheet"
@@ -147,3 +174,7 @@
 {% if page.tikzjax %}
   <link defer rel="stylesheet" type="text/css" href="https://tikzjax.com/v1/fonts.css">
 {% endif %}
+
+<!-- Load Common Javascript -->
+<script src="{{ '/assets/js/common.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/clickable-headers.js' | relative_url }}"></script>

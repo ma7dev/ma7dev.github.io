@@ -1,0 +1,96 @@
+---
+layout: default
+title: Tags
+permalink: /tag/
+---
+
+<div class="archive-page">
+  <h1 class="archive-title">Tags</h1>
+  
+  <div class="tag-cloud">
+    {% assign tags = site.tags | sort %}
+    
+    {% for tag in tags %}
+      {% assign tag_name = tag | first %}
+      {% assign tag_posts = tag | last %}
+      
+      <a href="{{ '/tag/' | append: tag_name | slugify | relative_url }}" class="tag-item" style="font-size: {{ tag_posts.size | times: 5 | plus: 100 }}%;">
+        #{{ tag_name }} <span class="tag-count">{{ tag_posts.size }}</span>
+      </a>
+    {% endfor %}
+  </div>
+  
+  {% if site.tags.size == 0 %}
+    <p class="no-tags">No tags found.</p>
+  {% endif %}
+</div>
+
+<style>
+  .archive-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  
+  .archive-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #E1E8ED;
+  }
+  
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px 0;
+  }
+  
+  .tag-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    background-color: rgba(29, 161, 242, 0.1);
+    color: #1DA1F2;
+    border-radius: 16px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+  
+  .tag-item:hover {
+    background-color: rgba(29, 161, 242, 0.2);
+  }
+  
+  .tag-count {
+    margin-left: 5px;
+    font-size: 0.8em;
+    opacity: 0.8;
+  }
+  
+  .no-tags {
+    padding: 30px 0;
+    text-align: center;
+    color: #657786;
+  }
+  
+  /* Dark mode support */
+  .dark-mode .archive-title {
+    color: #fff;
+    border-bottom-color: #38444d;
+  }
+  
+  .dark-mode .tag-item {
+    background-color: rgba(29, 161, 242, 0.15);
+  }
+  
+  .dark-mode .tag-item:hover {
+    background-color: rgba(29, 161, 242, 0.25);
+  }
+  
+  .dark-mode .no-tags {
+    color: #8899a6;
+  }
+</style> 

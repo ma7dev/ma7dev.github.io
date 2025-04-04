@@ -1,0 +1,175 @@
+// X.com style post card
+
+.post-card {
+  display: flex;
+  border: 1px solid var(--global-x-border);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  background-color: var(--global-x-background);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .post-thumbnail {
+    width: 150px;
+    height: auto;
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f7f9fa;
+    
+    @media (max-width: 576px) {
+      width: 100px;
+      height: 100px;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      position: absolute;
+      
+      &[src$=".svg"] {
+        width: 60%;
+        height: 60%;
+        object-fit: contain;
+        position: static;
+      }
+    }
+  }
+
+  .post-content {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0; // Fix for text overflow
+  }
+
+  .post-header {
+    margin-bottom: 0.5rem;
+  }
+
+  .post-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+    color: var(--global-x-text);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .post-description {
+    font-size: 0.9rem;
+    color: var(--global-x-text-light);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 0.8rem;
+    color: var(--global-x-text-light);
+  }
+
+  .post-dates {
+    text-align: right;
+  }
+
+  .post-updated {
+    font-weight: 500;
+  }
+
+  .post-created {
+    font-size: 0.75rem;
+  }
+
+  .post-reading-time {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .post-category {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    
+    &.article {
+      background-color: rgba(29, 155, 240, 0.1);
+      color: #1d9bf0;
+    }
+    
+    &.announcement {
+      background-color: rgba(120, 86, 255, 0.1);
+      color: #7856ff;
+    }
+    
+    &.project {
+      background-color: rgba(0, 186, 124, 0.1);
+      color: #00ba7c;
+    }
+  }
+}
+
+// Category color styling for post cards
+.category-filters {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  
+  .category-filter {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    
+    &.all {
+      background-color: var(--global-x-border);
+      color: var(--global-x-text);
+    }
+    
+    &.article {
+      background-color: rgba(29, 155, 240, 0.1);
+      color: #1d9bf0;
+    }
+    
+    &.announcement {
+      background-color: rgba(120, 86, 255, 0.1);
+      color: #7856ff;
+    }
+    
+    &.project {
+      background-color: rgba(0, 186, 124, 0.1);
+      color: #00ba7c;
+    }
+    
+    &.active {
+      background-color: var(--global-x-accent);
+      color: white;
+    }
+  }
+} 

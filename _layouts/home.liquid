@@ -1,102 +1,306 @@
 ---
 layout: default
 ---
-<div class="post">
-  <header class="post-header">
-    <h1 class="post-title">
-      {% if site.title == 'blank' %}
-        <span class="font-weight-bold">{{ site.first_name }}</span> {{ site.middle_name }}
-        {{ site.last_name }}
+<div class="x-home-container">
+  <!-- About Me section -->
+  <div class="x-profile-header">
+    {% if page.profile.image %}
+      {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
+      {% if page.profile.image_circular %}
+        {% assign profile_image_class = 'x-profile-image rounded-circle' %}
       {% else %}
-        {{ site.title }}
+        {% assign profile_image_class = 'x-profile-image rounded' %}
       {% endif %}
-    </h1>
-    <p class="desc">{{ page.subtitle }}</p>
-  </header>
-
-  <article>
-    {% if page.profile %}
-      <div class="profile float-{% if page.profile.align == 'left' %}left{% else %}right{% endif %}">
-        {% if page.profile.image %}
-          {% assign profile_image_path = page.profile.image | prepend: 'assets/img/' %}
-          {% if page.profile.image_circular %}
-            {% assign profile_image_class = 'img-fluid z-depth-1 rounded-circle' %}
-          {% else %}
-            {% assign profile_image_class = 'img-fluid z-depth-1
-      rounded' %}
-          {% endif %}
-          {% capture sizes %}(min-width: {{ site.max_width }}) {{ site.max_width | minus: 30 | times: 0.3}}px, (min-width: 576px)
-      30vw, 95vw"{% endcapture %}
-          {%
-            include figure.liquid loading="eager" path=profile_image_path class=profile_image_class sizes=sizes alt=page.profile.image
-            cache_bust=true
-          %}
-        {% endif %}
-        {% if page.profile.more_info %}
-          <div class="more-info">{{ page.profile.more_info }}</div>
-        {% endif %}
+      <div class="x-profile-image-container">
+        {%
+          include figure.liquid loading="eager" path=profile_image_path class=profile_image_class 
+          alt=page.profile.image cache_bust=true
+        %}
       </div>
     {% endif %}
-
-    <div class="clearfix">{{ content }}</div>
-
-    <!-- Latest posts -->
-    {% if page.latest_posts %}
-      <h2>
-        <a href="{{ '/archive/' | relative_url }}" style="color: inherit">Latest Posts</a>
-      </h2>
-      {% include list_posts.liquid type="latest" scrollable=true limit=5 %}
-    {% endif %}
-
-    <!-- announcements -->
-    {% if page.announcements %}
-      <h2>
-        <a href="{{ '/announcements/' | relative_url }}" style="color: inherit">Announcements</a>
-      </h2>
-        🗣️ talk 
-        <!-- | 📄 paper  -->
-        | 🏆 award 
-        <!-- | 💰 grant  -->
-        | 🚀 career 
-        <!-- | 🎉 misc -->
-      {% include announcements.liquid scrollable=true limit=3 %}
-    {% endif %}
-
-    <!-- Selected papers -->
-    {% if page.selected_papers %}
-      <h2>
-        <a href="{{ '/publications/' | relative_url }}" style="color: inherit">Selected Publications</a>
-      </h2>
-      {% include selected_papers.liquid scrollable=true limit=5 %}
-    {% endif %}
-
-    <!-- popular posts -->
-    {% if page.popular_posts %}
-      <h2>
-        <a href="{{ '/archive/' | relative_url }}" style="color: inherit">Popular Posts</a>
-      </h2>
-      {% include list_posts.liquid type="popular" scrollable=true limit=5 %}
-    {% endif %}
-
-    <!-- featured posts -->
-    {% if page.featured_posts %}
-      <h2>
-        <a href="{{ '/archive/featured/' | relative_url }}" style="color: inherit">Featured Posts</a>
-      </h2>
-      {% include list_posts.liquid type="featured" scrollable=true limit=5 %}
-    {% endif %}
-
-    <!-- Social -->
-    {% if page.social %}
-      <div class="social">
-        <div class="contact-icons">{% include social.liquid %}</div>
-
-        <div class="contact-note">{{ site.contact_note }}</div>
+    
+    <div class="x-profile-info">
+      <h1 class="x-profile-name">
+        <span class="font-weight-bold">{{ site.first_name }} {{ site.last_name }}</span>
+        <span class="x-verified-badge" title="Verified" onclick="showVerifiedPopup(event)">
+          <svg viewBox="0 0 22 22" aria-label="Verified account" role="img" class="r-4qtqp9 r-yyyyoo r-1xvli5t r-bnwqim r-lrvibr r-m6rgpd r-1cvl2hr r-f9ja8p r-og9te1" data-testid="icon-verified"><g><path d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"></path></g></svg>
+        </span>
+      </h1>
+      <p class="x-profile-handle">@{{ site.github_username }}</p>
+      <div class="x-profile-bio">{{ content }}</div>
+      {% if page.social %}
+      <div class="x-profile-social">
+        {% include social.liquid %}
       </div>
-    {% endif %}
+      {% endif %}
+    </div>
+  </div>
 
-    {% if site.announcementsletter.enabled and site.footer_fixed %}
-      {% include scripts/announcementsletter.liquid %}
+  <!-- Latest Announcements -->
+  {% assign announcements = site.posts | where_exp: "post", "post.categories contains 'announcement'" | where: "publish", true | sort: "date" | reverse %}
+  {% if announcements.size > 0 %}
+  <div class="x-section">
+    <h2 class="x-section-title">Latest Announcements</h2>
+    <ul class="x-announcements-list">
+      {% for announcement in announcements limit: 5 %}
+        <li class="x-announcement-item">
+          <span class="x-announcement-date">{{ announcement.date | date: "%b %d, %Y" }}</span>
+          <a href="{{ announcement.url | relative_url }}" class="x-announcement-title">{{ announcement.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+    {% if announcements.size > 5 %}
+    <div class="x-view-more">
+      <a href="{{ '/announcements/' | relative_url }}" class="x-view-more-btn">View all announcements</a>
+    </div>
     {% endif %}
-  </article>
+  </div>
+  {% endif %}
+  <!-- Highlighted Articles -->
+{% assign highlighted_articles = site.posts | where_exp: "post", "post.categories contains 'article'"| where: "publish", true | where: "highlight", true | sort: "date" | reverse %}
+{% if highlighted_articles.size > 0 %}
+  <div class="x-section">
+    <h2 class="x-section-title">Highlights</h2>
+    <div class="posts-list">
+      {% for post in highlighted_articles %}
+        {% include post-card.liquid post=post %}
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+  <!-- Latest Articles -->
+  {% assign articles = site.posts | where_exp: "post", "post.categories contains 'article'" | where: "publish", true | sort: "date" | reverse %}
+  {% if articles.size > 0 %}
+  <div class="x-section">
+    <h2 class="x-section-title">Articles</h2>
+    <div class="posts-list">
+      {% for post in articles limit: 3 %}
+        {% include post-card.liquid post=post %}
+      {% endfor %}
+      
+      {% if articles.size > 3 %}
+      <div class="x-view-more">
+        <a href="{{ '/articles/' | relative_url }}" class="x-view-more-btn">View all articles</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
 </div>
+
+<div id="verifiedPopup" class="x-verified-popup">
+  <div class="x-verified-popup-content">
+    <div class="x-verified-popup-header">
+      <h3>Verified Account</h3>
+      <span class="x-verified-popup-close" onclick="hideVerifiedPopup()">&times;</span>
+    </div>
+    <div class="x-verified-popup-body">
+      <p>This account is verified because I'm a real person.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Verified badge popup
+  function showVerifiedPopup(event) {
+    event.stopPropagation();
+    const popup = document.getElementById('verifiedPopup');
+    popup.style.display = 'block';
+    
+    // Position popup near the badge
+    const badge = event.currentTarget;
+    const rect = badge.getBoundingClientRect();
+    const popup_content = popup.querySelector('.x-verified-popup-content');
+    
+    // Position popup slightly below and to the right of the badge
+    popup_content.style.top = (rect.bottom + window.scrollY + 10) + 'px';
+    popup_content.style.left = (rect.left + window.scrollX - 100) + 'px';
+  }
+  
+  function hideVerifiedPopup() {
+    document.getElementById('verifiedPopup').style.display = 'none';
+  }
+  
+  // Close popup when clicking outside
+  document.addEventListener('click', function(event) {
+    const popup = document.getElementById('verifiedPopup');
+    if (popup.style.display === 'block' && !event.target.closest('.x-verified-popup-content') && !event.target.closest('.x-verified-badge')) {
+      popup.style.display = 'none';
+    }
+  });
+</script>
+
+<style>
+  .x-section {
+    margin: 2.5rem 0;
+  }
+  
+  .x-section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--global-x-border);
+  }
+  
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .x-view-more {
+    text-align: center;
+    margin: 1.5rem 0 0.5rem;
+  }
+  
+  .x-view-more-btn {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    background-color: var(--global-x-accent);
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+  
+  .x-view-more-btn:hover {
+    background-color: var(--global-x-accent-hover);
+    text-decoration: none;
+    color: white;
+  }
+
+  /* Verified badge and popup styles */
+  .x-verified-badge {
+    display: inline-flex;
+    margin-left: 5px;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  
+  .x-verified-badge svg {
+    height: 20px;
+    width: 20px;
+    fill: var(--global-x-accent, #1DA1F2);
+  }
+  
+  .x-verified-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  
+  .x-verified-popup-content {
+    position: absolute;
+    width: 300px;
+    background-color: var(--global-bg-color, white);
+    border-radius: 16px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    border: 1px solid var(--global-x-border, #e1e8ed);
+  }
+  
+  .x-verified-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--global-x-border, #e1e8ed);
+  }
+  
+  .x-verified-popup-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .x-verified-popup-close {
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+  
+  .x-verified-popup-body {
+    padding: 16px;
+  }
+  
+  .x-verified-popup-body p {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .profile-header {
+    padding: 20px;
+    border-bottom: 1px solid #e1e8ed;
+  }
+
+  .timeline-item, .pinned-item {
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f7f9fa;
+  }
+
+  .tech-item, .tools-item {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    background-color: #eef2f5;
+  }
+
+  .list-item.completed {
+    color: #1da1f2;
+  }
+
+  .social-link {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 50px;
+    background-color: #f7f9fa;
+    transition: all 0.3s;
+  }
+
+  /* Announcements styles */
+  .x-announcements-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .x-announcement-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--global-x-border);
+  }
+
+  .x-announcement-item:last-child {
+    border-bottom: none;
+  }
+
+  .x-announcement-date {
+    font-size: 0.9rem;
+    color: var(--global-text-color-light);
+    white-space: nowrap;
+  }
+
+  .x-announcement-title {
+    color: var(--global-text-color);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .x-announcement-title:hover {
+    color: var(--global-x-accent);
+    text-decoration: none;
+  }
+</style>

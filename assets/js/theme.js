@@ -1,5 +1,31 @@
 // Has to be in the head tag, otherwise a flicker effect will occur.
 
+// Immediately apply the saved theme setting to prevent flash of unstyled content
+(function() {
+  let savedTheme = localStorage.getItem("theme") || "system";
+  let theme = savedTheme;
+  
+  // If system theme, check user preference
+  if (theme === "system") {
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      theme = "dark";
+    } else {
+      theme = "light";
+    }
+  }
+  
+  // Apply theme immediately before page content loads
+//   document.documentElement.setAttribute("data-theme-setting", savedTheme);
+//   document.documentElement.setAttribute("data-theme", theme);
+  
+//   // Add X dark mode class if needed
+//   if (theme === "dark") {
+//     document.documentElement.classList.add("x-dark-theme");
+//   } else {
+//     document.documentElement.classList.remove("x-dark-theme");
+//   }
+})();
+
 // Toggle through light, dark, and system theme settings.
 let toggleThemeSetting = () => {
   let themeSetting = determineThemeSetting();
@@ -29,6 +55,19 @@ let applyTheme = () => {
   setHighlight(theme);
   setGiscusTheme(theme);
   setSearchTheme(theme);
+  
+  // Toggle X-style dark mode class on body
+  if (theme === "dark") {
+    document.body.classList.add("x-dark-mode");
+    document.querySelectorAll('.x-article, .x-archive').forEach((elem) => {
+      elem.classList.add("x-dark");
+    });
+  } else {
+    document.body.classList.remove("x-dark-mode");
+    document.querySelectorAll('.x-article, .x-archive').forEach((elem) => {
+      elem.classList.remove("x-dark");
+    });
+  }
 
   // if mermaid is not defined, do nothing
   if (typeof mermaid !== "undefined") {
@@ -231,22 +270,15 @@ let determineComputedTheme = () => {
   }
 };
 
-let initTheme = () => {
-  let themeSetting = determineThemeSetting();
+// Apply the theme immediately when script loads
+document.addEventListener("DOMContentLoaded", function () {
+  // Apply theme at startup to ensure X-style classes are set correctly
+  applyTheme();
+  
+  // Add event listener to the theme toggle button
+  const mode_toggle = document.getElementById("light-toggle");
 
-  setThemeSetting(themeSetting);
-
-  // Add event listener to the theme toggle button.
-  document.addEventListener("DOMContentLoaded", function () {
-    const mode_toggle = document.getElementById("light-toggle");
-
-    mode_toggle.addEventListener("click", function () {
-      toggleThemeSetting();
-    });
+  mode_toggle.addEventListener("click", function () {
+    toggleThemeSetting();
   });
-
-  // Add event listener to the system theme preference change.
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", ({ matches }) => {
-    applyTheme();
-  });
-};
+});

@@ -1,0 +1,116 @@
+.share-section {
+    margin: 2rem 0;
+    padding: 1rem 0;
+    border-top: 1px solid var(--global-x-border, #2f3336);
+    border-bottom: 1px solid var(--global-x-border, #2f3336);
+    animation: fadeIn 0.5s ease-in-out;
+
+    h3 {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--global-x-text, #e7e9ea);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0.7; }
+    to { opacity: 1; }
+}
+
+.share-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.share-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    white-space: nowrap;
+    
+    &:hover {
+        transform: translateY(-1px);
+    }
+    
+    i {
+        font-size: 1.1rem;
+    }
+    
+    &.x-button {
+        background-color: rgba(29, 155, 240, 0.1);
+        color: #1d9bf0;
+        
+        &:hover {
+            background-color: rgba(29, 155, 240, 0.2);
+            text-decoration: none;
+        }
+    }
+    
+    &.linkedin-button {
+        background-color: rgba(0, 119, 181, 0.1);
+        color: #0077b5;
+        
+        &:hover {
+            background-color: rgba(0, 119, 181, 0.2);
+            text-decoration: none;
+        }
+    }
+    
+    &.copy-button {
+        background-color: rgba(120, 120, 120, 0.1);
+        color: #aaa;
+        
+        &:hover {
+            background-color: rgba(120, 120, 120, 0.2);
+            text-decoration: none;
+        }
+    }
+    
+    .tooltip-text {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(15, 20, 25, 0.9);
+        color: #fff;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s;
+        pointer-events: none;
+        
+        &:after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: rgba(15, 20, 25, 0.9);
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .share-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .share-button {
+        margin-bottom: 0.5rem;
+    }
+} 

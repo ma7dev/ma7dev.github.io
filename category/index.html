@@ -1,0 +1,120 @@
+---
+layout: default
+title: Categories
+permalink: /category/
+---
+
+<div class="archive-page">
+  <h1 class="archive-title">Categories</h1>
+  
+  <div class="category-list">
+    {% assign sorted_categories = site.categories | sort %}
+    
+    {% for category in sorted_categories %}
+      {% assign category_name = category | first %}
+      {% assign category_posts = category | last %}
+      
+      <div class="category-item">
+        <a href="{{ '/category/' | append: category_name | slugify | relative_url }}" class="category-link">
+          <span class="category-name">{{ category_name }}</span>
+          <span class="category-count">{{ category_posts.size }}</span>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+  
+  {% if site.categories.size == 0 %}
+    <p class="no-categories">No categories found.</p>
+  {% endif %}
+</div>
+
+<style>
+  .archive-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  
+  .archive-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #E1E8ED;
+  }
+  
+  .category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .category-item {
+    padding: 12px 16px;
+    border-radius: 12px;
+    background-color: white;
+    border: 1px solid #E1E8ED;
+    transition: background-color 0.2s;
+  }
+  
+  .category-item:hover {
+    background-color: #F5F8FA;
+  }
+  
+  .category-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    color: #14171A;
+  }
+  
+  .category-name {
+    font-weight: 600;
+    font-size: 16px;
+  }
+  
+  .category-count {
+    background-color: #F5F8FA;
+    color: #657786;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .no-categories {
+    padding: 30px 0;
+    text-align: center;
+    color: #657786;
+  }
+  
+  /* Dark mode support */
+  .dark-mode .archive-title {
+    color: #fff;
+    border-bottom-color: #38444d;
+  }
+  
+  .dark-mode .category-item {
+    background-color: #192734;
+    border-color: #38444d;
+  }
+  
+  .dark-mode .category-item:hover {
+    background-color: #22303c;
+  }
+  
+  .dark-mode .category-link {
+    color: #fff;
+  }
+  
+  .dark-mode .category-count {
+    background-color: #22303c;
+    color: #8899a6;
+  }
+  
+  .dark-mode .no-categories {
+    color: #8899a6;
+  }
+</style> 

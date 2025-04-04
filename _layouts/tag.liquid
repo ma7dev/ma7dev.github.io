@@ -1,0 +1,113 @@
+---
+layout: page
+---
+
+<div class="x-article-container">
+  <div class="x-article-header">
+    <h1>{{ page.title }}</h1>
+  </div>
+  
+  <!-- Article list in X.com style -->
+  <div class="x-timeline">
+    <div class="x-section-visible">
+      <div class="posts-list">
+        {% assign tag_posts = site.posts | where_exp: "post", "post.tags contains page.tag" | where: "publish", true | sort: "date" | reverse %}
+        
+        {% if tag_posts.size > 0 %}
+          {% for post in tag_posts %}
+            {% include post-card.liquid post=post %}
+          {% endfor %}
+        {% else %}
+          <div class="x-article-empty">
+            <p>No articles found with this tag.</p>
+            <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2dpcWQ1Z2g4cXcweG5qeDF2czg4cHg3NGhoeXdndTAzcDZ4ejBhbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vR1dPIYzQmkRzLZk2w/giphy.gif" alt="No articles found" style="max-width: 100%; margin-top: 15px; display: block; margin-left: auto; margin-right: auto;">
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+:root {
+  --x-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --x-blue: #1DA1F2;
+  --x-black: #14171A;
+  --x-dark-gray: #657786;
+  --x-light-gray: #AAB8C2;
+  --x-extra-light-gray: #E1E8ED;
+  --x-lightest-gray: #F5F8FA;
+}
+
+/* X.com article styling */
+.x-article-container {
+  margin: 0 auto;
+  font-family: var(--x-font);
+}
+
+.x-article-header {
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--x-extra-light-gray);
+}
+
+.x-article-header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  font-family: var(--x-font);
+}
+
+.x-article-description {
+  color: var(--x-dark-gray);
+  font-size: 15px;
+  margin: 0;
+}
+
+.x-article-empty {
+  padding: 32px 16px;
+  text-align: center;
+  background-color: var(--x-lightest-gray);
+  border-radius: 12px;
+  margin: 24px 0;
+}
+
+.x-back-link {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--x-extra-light-gray);
+}
+
+/* Dark mode support */
+.dark-mode .x-article-empty {
+  background-color: #192734;
+  color: #8899a6;
+}
+
+.dark-mode .x-back-link {
+  border-color: #38444d;
+}
+</style>
+
+{%- comment -%} 
+<script>
+  // Initialize theme when page loads
+  document.addEventListener('DOMContentLoaded', function() {
+    // Define the missing initTheme function
+    function initTheme() {
+      const userPref = localStorage.getItem('theme');
+      if (userPref === 'dark') {
+        document.body.classList.add('dark-mode');
+      } else if (userPref === 'light') {
+        document.body.classList.add('light-mode');
+      } else {
+        // Default or system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.body.classList.add('dark-mode');
+        }
+      }
+    }
+    
+    initTheme();
+  });
+</script>  {%- endcomment -%}

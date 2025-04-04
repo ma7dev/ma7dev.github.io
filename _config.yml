@@ -2,7 +2,7 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: blank # the website title (if blank, full name will be used instead)
+title: 'ma7.dev' # the website title (if blank, full name will be used instead)
 first_name: Mazen
 last_name: Alotaibi
 email: mazen.ota@gmail.com
@@ -15,9 +15,14 @@ keywords: "" # add your own keywords or leave empty
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
 icon: ⚛️ # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
+# Author settings
+author:
+  name: Mazen Alotaibi
+  avatar: /assets/img/prof_pic-1400.webp # path to your avatar image
+
 url: https://ma7dev.dev # the base hostname & protocol for your site
 baseurl: "" # the subpath of your site, e.g. /blog/. Leave blank for root
-last_updated: true # set to true if you want to display last updated in the footer
+modified: true # set to true if you want to display last updated in the footer
 impressum_path: # set to path to include impressum link in the footer, use the same path as permalink in a page, helps to conform with EU GDPR
 back_to_top: true # set to false to disable the back to top button
 
@@ -85,6 +90,7 @@ kaggle_id: # your kaggle id
 keybase_username: # your keybase user name
 lastfm_id: # your lastfm id
 lattes_id: # your ID on Lattes (Brazilian Lattes CV)
+linktree_username: ma7dev # your Linktree username
 linkedin_username: ma7dev # your LinkedIn user name
 mastodon_username: # your mastodon instance+username in the format instance.tld/@username
 medium_username: # your Medium username
@@ -121,7 +127,7 @@ contact_note: >
 # For Google Analytics, see https://support.google.com/analytics/answer/10447272?hl=en&ref_topic=14088998&sjid=5129943941510317771-SA#zippy=%2Cgoogle-sites
 # and follow the instructions for Google Sites. You will need to create a Google Analytics property and copy the Google tag ID.
 # TODO: add Google Analytics
-google_analytics: # your Google Analytics measurement ID (format: G-XXXXXXXXXX)
+google_analytics: G-KWZXZ8VDCT # your Google Analytics measurement ID (format: G-XXXXXXXXXX)
 cronitor_analytics: # cronitor RUM analytics site ID (format: XXXXXXXXX)
 pirsch_analytics: # your Pirsch analytics site ID (length 32 characters)
 openpanel_analytics: # your Openpanel analytics client ID (format: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX)
@@ -136,7 +142,7 @@ bing_site_verification: # out your bing-site-verification ID (Bing Webmaster)
 
 blog_name: ma7dev # blog_name will be displayed in your blog page
 blog_description: Thinking Out Loud
-permalink: /archive/:title/
+permalink: /articles/:title/
 lsi: false # produce an index for related posts
 
 # Pagination
@@ -187,16 +193,19 @@ newsletter:
 # Collections
 # -----------------------------------------------------------------------------
 
-# TOOD: remove this???
 collections:
   announcements:
-    defaults:
-      layout: post
     output: true
     permalink: /:collection/:title/
   projects:
     output: true
     permalink: /:collection/:title/
+  category:
+    output: true
+    permalink: /category/:name/
+  tag:
+    output: true
+    permalink: /tag/:name/
 
 # -----------------------------------------------------------------------------
 # Jekyll settings
@@ -216,7 +225,7 @@ kramdown:
       start_line: 1
 
 # Includes & excludes
-include: ["_pages", "_announcements"]
+include: ["_pages"]
 exclude:
   - bin/
   - CONTRIBUTING.md
@@ -282,26 +291,6 @@ jekyll-minifier:
 # -----------------------------------------------------------------------------
 # Jekyll Archives
 # -----------------------------------------------------------------------------
-
-# jekyll-archives:
-#   enabled: [year, tags, categories] # enables year, tag and category archives (remove if you need to disable one of them).
-#   layouts:
-#     year: archive-year
-#     tag: archive-tag
-#     category: archive-category
-#   permalinks:
-#     year: "/archive/:year/"
-#     tag: "/archive/tag/:name/"
-#     category: "/archive/category/:name/"
-jekyll-archives:
-  enabled: [tags, categories] # enables year, tag and category archives (remove if you need to disable one of them).
-  layouts:
-    tag: archive-tag
-    category: archive-category
-  permalinks:
-    tag: "/archive/tag/:name/"
-    category: "/archive/category/:name/"
-
 display_tags: ["formatting", "images", "links", "math", "code", "blockquotes"] # these tags will be displayed on the front page of your blog
 display_categories: ["external-services"] # these categories will be displayed on the front page of your blog
 
@@ -388,35 +377,19 @@ external_links:
   exclude:
 
 # -----------------------------------------------------------------------------
-# Responsive WebP Images
+# Images and performance
 # -----------------------------------------------------------------------------
 
-# MAKE SURE imagemagick is installed and on your PATH before enabling imagemagick. In a terminal, run:
-#   convert -version
-imagemagick:
-  enabled: true # enables responsive images for your site (recommended, see https://github.com/alshedivat/al-folio/issues/537)
-  widths:
-    - 480
-    - 800
-    - 1400
-  input_directories:
-    - assets/img/
-  input_formats:
-    - ".jpg"
-    - ".jpeg"
-    - ".png"
-    - ".tiff"
-    - ".gif"
-  output_formats:
-    webp: "-quality 85"
+# Enable lazy loading of images by default
+lazy_loading_images: true
 
-# Lazy loading images
-#   If you enable lazy loading, all images will add the loading="lazy" attribute.
-#   This will make your site load faster, but it may not be supported in all browsers.
-#   You can also set loading="" to other values for specific images to override the default behavior.
-#   Options: "auto", "eager", "lazy"
-#   See https://web.dev/browser-level-image-lazy-loading/ for more information.
-lazy_loading_images: true # enables lazy loading of images (recommended)
+# Enable image optimization with WebP format
+imagemagick:
+  enabled: true
+  widths: [320, 480, 640, 800, 1200]
+  
+# Prefer modern image formats
+prefer_webp: true
 
 # -----------------------------------------------------------------------------
 # Optional Features
@@ -431,7 +404,7 @@ enable_bing_verification: false # enables bing site verification
 enable_masonry: true # enables automatic project cards arrangement
 enable_math: true # enables math typesetting (uses MathJax)
 enable_tooltips: false # enables automatic tooltip links generated for each section titles on pages and posts
-enable_darkmode: true # enables switching between light/dark modes
+enable_darkmode: false # enables switching between light/dark modes
 enable_navbar_social: false # enables displaying social links in the navbar on the about page
 enable_project_categories: true # enables categorization of projects into multiple categories
 enable_medium_zoom: true # enables image zoom feature (as on medium.com)

@@ -9,8 +9,8 @@
   --global-code-bg-color: #{$code-bg-color-light};
   --global-text-color: #{$black-color};
   --global-text-color-light: #{$grey-color};
-  --global-theme-color: #{$purple-color};
-  --global-hover-color: #{$purple-color};
+  --global-theme-color: #{$blue-color};
+  --global-hover-color: #{$blue-color};
   --global-hover-text-color: #{$white-color};
   --global-footer-bg-color: #{$grey-color-dark};
   --global-footer-text-color: #{$grey-color-light};
@@ -19,6 +19,11 @@
   --global-divider-color: rgba(0, 0, 0, 0.1);
   --global-card-bg-color: #{$white-color};
   --global-highlight-color: #{$red-color-dark};
+  
+  // RGB versions of colors for use in rgba() functions
+  --global-theme-color-rgb: #{color.channel($blue-color, "red", $space: rgb)}, #{color.channel($blue-color, "green", $space: rgb)}, #{color.channel($blue-color, "blue", $space: rgb)};
+  --global-hover-color-rgb: #{color.channel($blue-color, "red", $space: rgb)}, #{color.channel($blue-color, "green", $space: rgb)}, #{color.channel($blue-color, "blue", $space: rgb)};
+  
   --global-back-to-top-bg-color: rgba(
     #{color.channel($black-color, "red", $space: rgb)},
     #{color.channel($black-color, "green", $space: rgb)},
@@ -28,6 +33,15 @@
   --global-back-to-top-text-color: #{$white-color};
   --global-newsletter-bg-color: #{$white-color};
   --global-newsletter-text-color: #{$black-color};
+
+  // X Twitter theme colors - light mode defaults
+  --global-x-background: #ffffff;
+  --global-x-text: #000000;
+  --global-x-text-light: #536471;
+  --global-x-accent: #1d9bf0;
+  --global-x-accent-hover: #1a8cd8;
+  --global-x-border: #eff3f4;
+  --global-x-code-bg: #f7f9f9;
 
   --global-tip-block: #42b983;
   --global-tip-block-bg: #e2f5ec;
@@ -88,6 +102,11 @@ html[data-theme="dark"] {
   --global-distill-app-color: #{$grey-color-light};
   --global-divider-color: #424246;
   --global-card-bg-color: #{$grey-900};
+  
+  // RGB versions of colors for use in rgba() functions
+  --global-theme-color-rgb: #{color.channel($cyan-color, "red", $space: rgb)}, #{color.channel($cyan-color, "green", $space: rgb)}, #{color.channel($cyan-color, "blue", $space: rgb)};
+  --global-hover-color-rgb: #{color.channel($cyan-color, "red", $space: rgb)}, #{color.channel($cyan-color, "green", $space: rgb)}, #{color.channel($cyan-color, "blue", $space: rgb)};
+  
   --global-back-to-top-bg-color: rgba(
     #{color.channel($white-color, "red", $space: rgb)},
     #{color.channel($white-color, "green", $space: rgb)},
@@ -97,6 +116,15 @@ html[data-theme="dark"] {
   --global-back-to-top-text-color: #{$black-color};
   --global-newsletter-bg-color: #{$grey-color-light};
   --global-newsletter-text-color: #{$grey-color-dark};
+
+  // X Twitter theme colors - dark mode
+  --global-x-background: #000000;
+  --global-x-text: #ffffff;
+  --global-x-text-light: #71767b;
+  --global-x-accent: #1d9bf0;
+  --global-x-accent-hover: #1a8cd8;
+  --global-x-border: #2f3336;
+  --global-x-code-bg: #16181c;
 
   --global-tip-block: #42b983;
   --global-tip-block-bg: #e2f5ec;
