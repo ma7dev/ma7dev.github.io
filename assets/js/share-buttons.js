@@ -18,8 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(xText)}&url=${encodeURIComponent(url)}`, '_blank', 'width=550,height=420');
                     break;
                 case 'linkedin':
-                    // LinkedIn's sharing dialog
-                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(description)}`, '_blank', 'width=550,height=420');
+                    // LinkedIn's sharing dialog - using current working format
+                    // As of 2024, LinkedIn only accepts the URL parameter, stripping others
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank', 'width=550,height=420');
                     break;
                 case 'copy':
                     try {
