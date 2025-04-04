@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const type = this.dataset.share;
             const url = window.location.href;
             const title = document.title.replace(' | ma7.dev', '');
-            const description = document.querySelector('meta[name="description"]')?.content || '';
+            const metaDescription = document.querySelector('meta[name="description"]');
+            const description = metaDescription ? metaDescription.content : '';
             
             switch(type) {
                 case 'twitter':

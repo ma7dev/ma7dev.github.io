@@ -383,7 +383,7 @@ nav_order: 4
     let currentPage = parseInt(urlParams.get('page')) || 1;
     
     // Calculate total pages
-    const totalPages = Math.ceil(articles.length / {{ posts_per_page }});
+    const totalPages = Math.ceil(articles.length / 10);
     
     // Ensure current page is valid
     if (currentPage < 1) currentPage = 1;
