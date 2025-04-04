@@ -11,9 +11,6 @@ thumbnail:
     image: /assets/img/techhub-logo.jpg
     caption: "TechHub"
     source: https://www.bookophile.com/en/worlds-of-books/articles/versailles-in-its-former-glory
-discussions:
-    - x: https://x.com/ma7dev/status/1234567890
-    - hackernews: https://news.ycombinator.com/item?id=12345678
 ---
 
 ## Event

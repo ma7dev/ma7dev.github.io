@@ -387,6 +387,9 @@ lazy_loading_images: true
 imagemagick:
   enabled: true
   widths: [320, 480, 640, 800, 1200]
+  output_formats:
+    webp: "-quality 75"
+    jpg: "-quality 80"
   
 # Prefer modern image formats
 prefer_webp: true

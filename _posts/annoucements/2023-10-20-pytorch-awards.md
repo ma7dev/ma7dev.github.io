@@ -10,10 +10,9 @@ toc: false
 thumbnail: 
     image: /assets/img/pytorch-award.jpeg
     caption: "PyTorch Awards 2023"
-    source: https://pytorch.org/ecosystem/contributor-awards-2023/
+    source: https://pytorch.org/ecosystem/contributor-awards-2023
 discussions:
-    - x: https://x.com/ma7dev/status/1234567890
-    - hackernews: https://news.ycombinator.com/item?id=12345678
+    - x: https://x.com/ma7dev/status/1714297361332150521
 
 ---
 

@@ -13,8 +13,8 @@ highlight: false
 popular: false
 toc: true
 discussion:
-  x: https://x.com/ma7dev/status/1234567890
-  hn: https://news.ycombinator.com/item?id=12345678
+  x: ""
+  hn: ""
 ---
 
 The last few days, I've been vibe coding with Cursor to build a simple web game to be part of the [#vibejam](https://x.com/hashtag/vibejam) event. Due to my prior experience in using Cursor where I vibe code but I get stuck doing vibe debugging, I have decided to find a better way to vibe code. Here is my experience in three parts: Using Memory Bank, using devlogs, and 

@@ -33,7 +33,8 @@ nav_order: 4
         {% assign posts_per_page = 10 %}
         {% assign total_posts = articles.size %}
         {% assign total_pages = total_posts | divided_by: posts_per_page %}
-        {% if total_posts | modulo: posts_per_page != 0 %}
+        {% assign remainder = total_posts | modulo: posts_per_page %}
+        {% if remainder != 0 %}
           {% assign total_pages = total_pages | plus: 1 %}
         {% endif %}
         

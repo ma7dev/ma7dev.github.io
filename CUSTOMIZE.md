@@ -9,21 +9,21 @@ The project is structured as follows, focusing on the main components that you w
 ```txt
 .
 ├── 📂 assets/: contains the assets that are displayed in the website
-│   └── 📂 json/
-    │   └── 📄 resume.json: CV in JSON format (https://jsonresume.org/)
+│   └── 📂 json/
+    │   └── 📄 resume.json: CV in JSON format (https://jsonresume.org/)
 ├── 📂 _bibliography/
-│   └── 📄 papers.bib: bibliography in BibTeX format
+│   └── 📄 papers.bib: bibliography in BibTeX format
 ├── 📄 _config.yml: the configuration file of the template
 ├── 📂 _data/: contains some of the data used in the template
-│   ├── 📄 cv.yml: CV in YAML format, used when assets/json/resume.json is not found
-│   └── 📄 repositories.yml: users and repositories info in YAML format
+│   ├── 📄 cv.yml: CV in YAML format, used when assets/json/resume.json is not found
+│   └── 📄 repositories.yml: users and repositories info in YAML format
 ├── 📂 _includes/: contains code parts that are included in the main HTML file
-│   └── 📄 news.liquid: defines the news section layout in the about page
+│   └── 📄 news.liquid: defines the news section layout in the about page
 ├── 📂 _layouts/: contains the layouts to choose from in the frontmatter of the Markdown files
-├── 📂 _announcements/: the announcements that will appear in the announcements section in the about page
+├── 📂 _posts/: contains the blog posts (including announcements)
 ├── 📂 _pages/: contains the pages of the website
 |   └── 📄 404.md: 404 page (page not found)
-├── 📂 _posts/: contains the blog posts
+|   └── 📄 annoucements.md: announcements page
 ├── 📂 _projects/: contains the projects
 └── 📂 _sass/: contains the SASS files that define the style of the website
     ├── 📄 _base.scss: base style of the website
@@ -66,9 +66,9 @@ If you want to create blog posts that are not ready to be published, but you wan
 
 You can create new projects by adding new Markdown files in the [\_projects](_projects/) directory. The easiest way to do this is to copy an existing project and modify it.
 
-## Adding some news
+## Adding announcements
 
-You can add announcements in the about page by adding new Markdown files in the [\_announcements](_announcements/) directory. There are currently two types of announcements: inline announcements and announcements with a link. Announcements with a link take you to a new page while inline announcements are displayed directly in the about page. The easiest way to create yours is to copy an existing announcements and modify it.
+You can add announcements by adding new Markdown files in the [\_posts](_posts/) directory with the category set to "announcement" in the frontmatter. The format should follow standard blog post naming conventions: `YYYY-MM-DD-title.md`. Announcements will automatically appear in the announcements section on the home page and on the dedicated announcements page.
 
 ## Adding Collections
 
@@ -172,28 +172,17 @@ You can customize the fonts, spacing, and more by editing [\_sass/\_base.scss](_
 
 ## Scheduled Posts
 
-`al-folio` contains a workflow which automatically publishes all posts scheduled at a specific day, at the end of the day (23:30). By default the action is disabled, and to enable it you need to go to `.github/workflows/` and find the file called `schedule-posts.txt`. This is the workflow file. For GitHub to recognize it as one (or to enable the action), you need to rename it to `schedule-posts.yml`.
+`al-folio` has support for scheduled posts, but it requires additional setup. If you want to use this feature, you need to:
 
-In order to use this you need to save all of your "Completed" blog posts which are scheduled to be uploaded on a specific date, in a folder named `_scheduled/` in the root directory.
+1. Create a `_scheduled/` directory in the root of your repository
+2. Go to `.github/workflows/` and rename `schedule-posts.txt` to `schedule-posts.yml` to enable the action
 
-> Incomplete posts should be saved in `_drafts/`
-
-### Name Format
-
-In this folder you need to store your file in the same format as you would in `_posts/`
-
-> Example file name: `2024-08-26-This file will be uploaded on 26 August.md`
+In the `_scheduled/` folder, save your completed blog posts that should be published on a specific date, using the standard naming format: `YYYY-MM-DD-title.md`. The date in the filename determines when the post will be published.
 
 ### Important Notes
 
-- The scheduler uploads posts everyday at 🕛 23:30 UTC
-- It will only upload posts at 23:30 UTC of their respective scheduled days, It's not uploaded in 23:59 in case there are a lot of files as the scheduler must finish before 00:00
-- It will only upload files which follow the pattern `yyyy-mm-dd-title.md`
-  - This means that only markdown files will be posted
-  - It means that any markdown which do not follow this pattern will not be posted
-- The scheduler works by moving posts from the `_scheduled/` directory to `_posts/`, it will not post to folders like `_projects/` or `_announcements/`
-- The date in the name of the file is the day that file will be uploaded on
-  - `2024-08-27-file1.md` will not be posted before or after 27-August-2024 (Scheduler only works for posts scheduled on the present day)
-  - `2025-08-27-file2.md` will be posted exactly on 27-August-2025
-  - `File3.md` will not be posted at all
-  - `2026-02-31-file4.md` is supposed to be posted on 31-February-2026, but there is no 31st in February hence this file will never be posted either
+- The scheduler uploads posts every day at 23:30 UTC
+- It will only upload posts with dates matching the current day
+- Only markdown files following the `YYYY-MM-DD-title.md` pattern will be processed
+- The scheduler moves posts from `_scheduled/` to `_posts/`
+- Posts with invalid dates (like February 31) will never be published

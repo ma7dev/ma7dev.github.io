@@ -11,9 +11,6 @@ thumbnail:
     image: /assets/img/iau-logo.jpg
     caption: "AI & Robot Club @ IAU"
     source: https://x.com/AIRobotClub_IAU
-discussions:
-    - x: https://x.com/ma7dev/status/1234567890
-    - hackernews: https://news.ycombinator.com/item?id=12345678
 
 ---
 

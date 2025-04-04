@@ -11,9 +11,6 @@ thumbnail:
     image: /assets/img/pydata-riyadh-logo.jpg
     caption: "PyData Riyadh"
     source: https://x.com/PyDataRiyadh
-discussions:
-    - x: https://x.com/ma7dev/status/1234567890
-    - hackernews: https://news.ycombinator.com/item?id=12345678
 
 ---
 
